@@ -1,0 +1,50 @@
+---
+description: Ejecutar el plan de desarrollo de una Task del tracker ya definida usando las skills de desarrollo agentico
+alwaysApply: false
+---
+
+# Ejecucion de Plan de Desarrollo
+
+Usar este prompt para implementar una Task cuyo plan ya esta escrito en su Description.
+**No regenerar el plan. Ejecutar lo que dice.**
+
+## Localizar Skills
+
+Buscar las carpetas de skills en este orden:
+
+1. `.cursor/skills/`
+2. `.agents/skills/`
+3. `.skills/`
+4. `desarrollo-agentico/skills/`
+5. `.claude/skills/`
+6. `skills/`
+
+Skills requeridas: `dev-common`, `dev-plan-execution`, `dev-testing-strategy`.
+Skill opcional: `dev-code-review` (si el usuario opta por el code review en Fase 5.5).
+
+Si falta una skill requerida, pedir copiar `desarrollo-agentico/skills/*` al destino indicado por la guia.
+
+## Inicio Obligatorio
+
+1. Leer `dev-common/SKILL.md`.
+2. Leer `dev-common/config/dev-project-config.md` y validar que no tenga placeholders.
+3. Leer el contrato del tracker configurado (`dev-common/references/tracker-contracts-ado.md` o `tracker-contracts-notion.md`).
+4. Leer `dev-plan-execution/SKILL.md`.
+5. Leer la regla de rol/stack del repositorio (validaciones por iteracion y testing de cierre).
+6. En Fase 2, seguir `dev-testing-strategy/SKILL.md`.
+7. Si el usuario opta por el code review en Fase 5.5, leer `dev-code-review/SKILL.md` en ese momento.
+
+## Input
+
+ID de Task del tracker (numerico ADO o `PREFIX-123`).
+
+## Mapa de Contexto
+
+En la Fase 0, ademas de la Task y su US padre, leer las **relaciones directas** de la Task (un solo nivel): las tareas `predecessor` y su plan, para conocer el contexto de lo ya implementado. Resumir el contexto en 2-4 lineas antes de ejecutar. Detalle en `dev-plan-execution/SKILL.md` (Fase 0) y en el contrato del tracker configurado (Relaciones entre Work Items).
+
+## Reglas
+
+- No regenerar el plan. Ejecutar lo que dice.
+- No tocar fuera del scope del plan.
+- Preguntar ante incertidumbre.
+- Las reglas de arquitectura del proyecto prevalecen sobre las reglas base.

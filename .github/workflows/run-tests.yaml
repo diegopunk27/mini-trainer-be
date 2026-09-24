@@ -1,0 +1,77 @@
+name: Run Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+      - development
+  push:
+    branches:
+      - main
+      - development
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: root_password
+          POSTGRES_DB: mini_trainer_testing
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres -d mini_trainer_testing"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Set up test environment
+        run: |
+          cp .env.testing .env
+          echo "DB_HOST=127.0.0.1" >> $GITHUB_ENV
+          echo "DB_PORT=5432" >> $GITHUB_ENV
+          echo "DB_USERNAME=postgres" >> $GITHUB_ENV
+          echo "DB_PASSWORD=root_password" >> $GITHUB_ENV
+          echo "DB_DATABASE=mini_trainer_testing" >> $GITHUB_ENV
+          echo "TYPEORM_SYNC=false" >> $GITHUB_ENV
+          echo "JWT_SECRET=test_jwt_secret" >> $GITHUB_ENV
+          echo "JWT_ISSUER=test_app" >> $GITHUB_ENV
+          echo "JWT_AUDIENCE=test_audience" >> $GITHUB_ENV
+          echo "JWT_EXPIRES_IN=1h" >> $GITHUB_ENV
+          echo "EMAIL_DRIVER=console" >> $GITHUB_ENV
+          echo "PORT=4000" >> $GITHUB_ENV
+          echo "CORS_ORIGINS=http://localhost:3000" >> $GITHUB_ENV
+          echo "LOG_LEVEL=error" >> $GITHUB_ENV
+          echo "NODE_ENV=test" >> $GITHUB_ENV
+
+      - name: Lint
+        run: yarn lint-check
+
+      - name: Build
+        run: yarn build
+
+      - name: Unit tests
+        run: yarn test:unit
+
+      - name: Run migrations
+        run: yarn typeorm:run-migrations
+
+      - name: E2E tests
+        run: yarn test:e2e

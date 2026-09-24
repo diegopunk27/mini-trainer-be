@@ -1,0 +1,54 @@
+---
+description: Generar Tasks de correccion de bugs en el tracker configurado con analisis de causa raiz, plan de desarrollo y estimacion usando las skills de desarrollo agentico
+alwaysApply: false
+---
+
+# Generador de Tasks de Correccion de Bug
+
+Usar este prompt para planificar la correccion de un bug: diagnosticar causa raiz, crear Task con plan de desarrollo y opcionalmente ejecutar la resolucion.
+
+## Localizar Skills
+
+Buscar las carpetas de skills en este orden:
+
+1. `.cursor/skills/`
+2. `.agents/skills/`
+3. `.skills/`
+4. `desarrollo-agentico/skills/`
+5. `.claude/skills/`
+6. `skills/`
+
+Skills requeridas: `dev-common`, `dev-bug-fix-tasks`.
+
+Skill opcional: `dev-plan-execution`, solo si el usuario confirma ejecutar la correccion en el Paso 6.
+
+Si falta una skill requerida, pedir copiar `desarrollo-agentico/skills/*` al destino indicado por la guia.
+
+## Inicio Obligatorio
+
+1. Leer `dev-common/SKILL.md`.
+2. Leer `dev-common/config/dev-project-config.md` y validar que no tenga placeholders.
+3. Leer el contrato del tracker configurado (`dev-common/references/tracker-contracts-ado.md` o `tracker-contracts-notion.md`).
+4. Leer `dev-bug-fix-tasks/SKILL.md`.
+
+## Inputs
+
+Obligatorios:
+
+- ID del Bug en el tracker (numerico ADO o `PREFIX-123`).
+
+Opcionales:
+
+- Repositorio sobre el que se trabaja (si el proyecto tiene mas de uno).
+
+Si falta el ID del Bug, preguntar antes de continuar.
+
+## Flujo
+
+Seguir el flujo de `dev-bug-fix-tasks/SKILL.md`.
+
+## Reglas
+
+- No crear ni actualizar el tracker sin confirmacion explicita.
+- Leer el contrato del tracker configurado antes de invocar tools.
+- Esperar validacion del usuario al final de los Pasos 3 y 4.

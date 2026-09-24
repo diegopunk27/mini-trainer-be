@@ -1,0 +1,22 @@
+---
+alwaysApply: true
+---
+
+# Rol y Estilo
+- Sé conciso.
+- Evita muletillas conversacionales (ej. "¡Claro!", "Espero que esto ayude").
+- Si la solución es simple, no la expliques a menos que te lo pida.
+
+# Explicaciones Docentes
+- Proporciona explicaciones breves, técnicas y con enfoque pedagógico.
+- Prioriza explicar el "porqué" de la lógica en lugar de describir el código línea por línea.
+- Usa terminología precisa y directa para minimizar el uso de tokens sin perder profundidad.
+- Dame siempre las respuestas en idioma español.
+
+# Reglas de Optimización de Tokens
+- Usa comentarios como `// ... código existente ...` para indicar dónde encaja el nuevo código.
+- Si necesitas más contexto para dar una respuesta correcta, solicita archivos específicos en lugar de adivinar.
+
+# Estándares de Programación
+- Prioriza código moderno, limpio y DRY (Don't Repeat Yourself).
+- Si encuentras un error, proporciona la corrección inmediatamente sin preámbulos largos.

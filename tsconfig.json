@@ -1,0 +1,36 @@
+{
+  "extends": "./tsconfig.type-checking.json",
+  "exclude": ["node_modules", "dist"],
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "ESNext",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "removeComments": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "ignoreDeprecations": "6.0",
+    "baseUrl": "./",
+    "rootDir": "./",
+    "plugins": [
+      {
+        "name": "@nestjs/swagger/plugin"
+      }
+    ],
+    "paths": {
+      "@cqrs": ["./src/modules/cqrs/index"],
+      "@logs/*": ["./src/modules/logs/*"],
+      "@common/*": ["./src/common/*"],
+      "@src/*": ["./src/*"],
+      "@auth": ["./src/modules/auth/index"],
+      "@testing/*": ["./src/testing/*"],
+      "@config/*": ["./src/config/*"],
+      "@persistence/*": ["./src/common/persistence/*"],
+      "@persistence": ["./src/common/persistence/index"]
+    }
+  }
+}

@@ -1,0 +1,167 @@
+---
+description: Generar o refactorizar tests end to end en NestJS con CQRS.
+globs:
+alwaysApply: false
+---
+# E2E Testing Guidelines for NestJS with CQRS
+
+## Principios Básicos
+
+- Los tests e2e deben probar el flujo completo desde el controlador hasta la respuesta.
+- No se deben probar servicios externos (S3, email, etc.) - estos deben ser mockeados.
+- No es necesario probar validaciones de class-validator, solo validaciones de negocio.
+- Cada test debe limpiar los datos que crea en la base de datos.
+- Timeout recomendado: 30000ms (o más para operaciones complejas con archivos).
+- Seguir el patrón AAA (Arrange, Act, Assert) en cada test.
+
+## Análisis Previo
+
+Antes de escribir los tests, realizar un análisis completo:
+
+1. Identificar todos los endpoints del controlador
+2. Para cada endpoint:
+   - Identificar el command/query handler asociado
+   - Analizar todas las bifurcaciones posibles en el código
+   - Identificar validaciones de negocio
+   - Identificar posibles errores y excepciones
+
+3. Diseñar casos de prueba para:
+   - Happy path (flujo normal exitoso)
+   - Casos de error (validaciones de negocio, conflictos, etc.)
+   - Casos especiales (valores límite, casos borde)
+
+4. Crear una carpeta `tests` dentro de la carpeta `controllers` y agregar un archivo `*.e2e.spec.ts` por cada endpoint. Usar siempre kebab-case para los nombres de archivos.
+
+## Estructura del Test
+
+### Setup
+
+```typescript
+describe('ResourceController', () => {
+  let app: INestApplication;
+  let repository: ResourceRepository;
+  let mockUserService: MockUserService;
+  const idsToDelete: number[] = [];
+
+  beforeAll(async () => {
+    const result = await setupTestingModule({
+      modules: [ResourceModule],
+      mocks: [
+        {
+          provide: ExternalService,
+          useValue: {
+            method1: jest.fn().mockResolvedValue(mockResponse),
+          }
+        }
+      ],
+    });
+
+    const { testingModule } = result;
+    mockUserService = result.mockUserService;
+
+    app = testingModule.createNestApplication();
+    repository = testingModule.get<ResourceRepository>(ResourceRepository);
+
+    setupTestingApp(app);
+    await app.init();
+
+    // Set default user role
+    mockUserService.setUser({
+      id: 1,
+      email: 'test@example.com',
+      roleId: 1,
+      roleName: 'ADMIN',
+    });
+  });
+
+  afterAll(async () => {
+    // Limpiar TODOS los datos creados durante los tests
+    if (idsToDelete.length > 0) {
+      await repository.getEntityManager.delete(Entity, { id: In(idsToDelete) });
+    }
+    await app.close();
+  });
+```
+
+### Cambio de Roles entre Tests
+
+```typescript
+it('should behave differently for different roles', async () => {
+  // Cambiar rol para este test específico
+  mockUserService.setUser({
+    id: 2,
+    email: 'viewer@example.com',
+    roleId: 2,
+    roleName: 'VIEWER',
+  });
+
+  const response = await request(app.getHttpServer())
+    .get('/resources')
+    .expect(200);
+
+  // Restaurar rol para próximos tests
+  mockUserService.setUser({ id: 1, email: 'admin@example.com', roleId: 1, roleName: 'ADMIN' });
+});
+```
+
+### Test Cases Pattern
+
+```typescript
+describe('POST /resources', () => {
+  it('should create resource successfully', async () => {
+    // Arrange
+    const createDto = { name: 'Test Resource' };
+
+    // Act
+    const response = await request(app.getHttpServer())
+      .post('/resources')
+      .send(createDto)
+      .expect(201);
+
+    // Assert
+    expect(response.body.id).toBeDefined();
+    expect(response.body.name).toBe(createDto.name);
+
+    // Track for cleanup
+    idsToDelete.push(response.body.id);
+  });
+
+  it('should return 409 on conflict', async () => {
+    const response = await request(app.getHttpServer())
+      .post('/resources')
+      .send({ name: 'Duplicate Name' })
+      .expect(409);
+
+    expect(response.body.message).toBeDefined();
+  });
+});
+```
+
+## Reglas de Limpieza
+
+- Siempre trackear IDs creados durante los tests en arrays (ej. `idsToDelete`)
+- Limpiar en `afterAll`, no en `afterEach` (más eficiente)
+- Usar `In()` de TypeORM para eliminar múltiples registros en una sola query
+- Si un test falla a mitad, asegurarse de que `afterAll` igual limpie los datos
+
+## Mockeo de Servicios Externos
+
+```typescript
+// En setupTestingModule mocks:
+{
+  provide: EmailService,
+  useValue: {
+    sendEmail: jest.fn().mockResolvedValue({ success: true }),
+  }
+}
+```
+
+## Imports necesarios
+
+```typescript
+import { INestApplication } from '@nestjs/common';
+import { setupTestingApp } from '@config/app.config';
+import { setupTestingModule } from '@testing/test.config';
+import { MockUserService } from '@common/test-utils/mock-user.service';
+import request from 'supertest';
+```

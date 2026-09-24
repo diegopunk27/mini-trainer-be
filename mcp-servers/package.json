@@ -1,0 +1,35 @@
+{
+  "name": "mcp-servers",
+  "version": "1.0.0",
+  "description": "MCP Servers for Cursor/Claude Code integration",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "install:all": "npm install",
+    "postgresql:start": "node postgresql/src/mcp-postgres-server.js",
+    "postgresql:setup": "node postgresql/scripts/setup.cjs",
+    "postgresql:test": "node postgresql/scripts/test.cjs",
+    "notion:start": "node notion/src/server.js",
+    "notion:setup": "node notion/scripts/setup.cjs",
+    "notion:test": "node --test notion/test/notion.test.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.4.0",
+    "@notionhq/client": "^5",
+    "dotenv": "^16.3.1",
+    "exceljs": "^4.4.0",
+    "node-fetch": "^3.3.2",
+    "pg": "^8.11.3",
+    "unpdf": "^1.8.1"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "cursor",
+    "claude-code",
+    "postgresql",
+    "azure-devops"
+  ],
+  "author": "",
+  "license": "MIT"
+}

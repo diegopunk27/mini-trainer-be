@@ -1,0 +1,49 @@
+---
+description: Generar tareas de desarrollo (Tasks del tracker configurado) a partir de una User Story usando las skills de desarrollo agentico
+alwaysApply: false
+---
+
+# Generador de Tareas
+
+Usar este prompt para descomponer una User Story en Tasks con plan de desarrollo y estimacion.
+
+## Localizar Skills
+
+Buscar las carpetas de skills en este orden:
+
+1. `.cursor/skills/`
+2. `.agents/skills/`
+3. `.skills/`
+4. `desarrollo-agentico/skills/`
+5. `.claude/skills/`
+6. `skills/`
+
+Skills requeridas: `dev-common`, `dev-tasks`.
+
+Si falta una skill requerida, pedir copiar `desarrollo-agentico/skills/*` al destino indicado por la guia.
+
+## Inicio Obligatorio
+
+1. Leer `dev-common/SKILL.md`.
+2. Leer `dev-common/config/dev-project-config.md` y validar que no tenga placeholders.
+3. Leer el contrato del tracker configurado (`dev-common/references/tracker-contracts-ado.md` o `tracker-contracts-notion.md`).
+4. Leer `dev-tasks/SKILL.md`.
+
+## Inputs
+
+Obligatorios:
+
+- User Story: numero (obtener por MCP) o texto completo.
+- Repositorio sobre el que se trabaja (si el proyecto tiene mas de uno).
+
+Si falta un input, preguntar antes de continuar.
+
+## Flujo
+
+Seguir los pasos de `dev-tasks/SKILL.md`: contexto e impacto -> division en tareas (alto nivel) -> definicion completa con plan y estimacion -> creacion en el tracker (vinculo `parent` y dependencias `predecessor`/`successor`) -> adjuntos FE si aplica.
+
+## Reglas
+
+- No crear ni actualizar el tracker sin confirmacion explicita.
+- Leer el contrato del tracker configurado antes de invocar tools.
+- Esperar validacion del usuario al final de los Pasos 2 y 3.

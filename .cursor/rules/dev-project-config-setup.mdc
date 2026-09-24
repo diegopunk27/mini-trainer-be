@@ -1,0 +1,108 @@
+---
+description: Configurar el starter de desarrollo agentico completando dev-project-config.md y generando una regla de rol/stack por repositorio
+alwaysApply: false
+---
+
+# Setup de Proyecto - Desarrollo Agentico
+
+Usar este prompt solo durante el setup inicial del starter de desarrollo en un proyecto.
+
+## Localizar Skills
+
+La skill requerida es `dev-common`. Resolver `<skills-root>` asi:
+
+### 1. Preguntar destino (si el usuario no lo indico)
+
+Si el mensaje no incluye donde estan o deben instalarse las skills, preguntar y proponer:
+
+| Opcion | Ruta | Cuando usar |
+|---|---|---|
+| Cursor (recomendado) | `.cursor/skills/` | Proyecto con Cursor |
+| Portable multi-agente | `.agents/skills/` | Compartir entre Cursor, Codex, etc. |
+| Claude Code | `.claude/skills/` | Proyecto con Claude Code |
+| Starter embebido | `desarrollo-agentico/skills/` | Repo que mantiene el starter sin copiar |
+| Personalizado | ruta indicada por el usuario | Otro entorno o monorepo |
+
+Esperar confirmacion explicita del destino antes de copiar o editar archivos.
+
+### 2. Detectar o instalar
+
+1. Si el usuario indico ruta, usarla como `<skills-root>`.
+2. Si no indico ruta, buscar en este orden hasta encontrar `dev-common/`:
+   - `.cursor/skills/`
+   - `.agents/skills/`
+   - `.skills/` (legacy)
+   - `desarrollo-agentico/skills/`
+   - `.claude/skills/`
+   - `skills/`
+3. Si no existe en ninguna ruta, copiar `desarrollo-agentico/skills/*` al `<skills-root>` confirmado por el usuario. Esa copia incluye `dev-testing-strategy` junto al resto; no instalarla por separado.
+4. Si hay mas de una copia, usar la indicada por el usuario; si no indico, pedir confirmacion.
+
+## Objetivo
+
+1. Completar `<skills-root>/dev-common/config/dev-project-config.md` (proyecto + repositorios).
+2. Generar una regla de rol/stack por cada repositorio a partir de `<skills-root>/dev-common/config/stack-role.template.md`.
+
+No modificar otros prompts, scripts ni referencias.
+
+## Flujo
+
+### 1. Datos del proyecto
+
+1. Leer `dev-common/SKILL.md` y `dev-common/config/dev-project-config.md`.
+2. Pedir/confirmar: **Tracker** (`ado` | `notion`, default `ado`) e **ID prefix**.
+3. Si `ado`: Project Name, Project ID y Organization.
+4. Si `notion`: data source ids (US, Task, Bug) y Board URL.
+
+### 2. Repositorios
+
+Para cada repositorio del proyecto (pueden ser varios), pedir:
+
+- Nombre del repositorio.
+- Repository ID (resolver por MCP si el usuario da el nombre).
+- Base branch (default `main` salvo indicacion).
+- Ubicacion de reglas del proyecto: carpeta donde viven las reglas de arquitectura y convenciones (default `.cursor/rules/` salvo indicacion).
+
+### 3. Rol/stack por repositorio
+
+Para cada repositorio, preguntar al usuario:
+
+- Stack: lenguaje/runtime, framework principal, arquitectura/patron, capa de datos, convenciones.
+- Lineamientos basicos que el agente debe respetar.
+- **Validaciones por iteracion**: que comandos correr despues de cada iteracion para verificar el codigo (autofix de linter, lint, tests, etc.).
+- **Testing de cierre**: que comandos correr al finalizar (suite completa, build/compilacion).
+
+Con esas respuestas, generar una regla por repo a partir de `stack-role.template.md`, reemplazando los `<COMPLETAR_...>` y completando los bloques `<INSERTE AQUI...>`. Guardar cada regla en la carpeta de reglas del proyecto (ej: `.cursor/rules/dev-role-<repo>.mdc`) y registrar su nombre en el campo `Regla de rol/stack` del repo en `dev-project-config.md`.
+
+### 4. Confirmacion
+
+Proponer los valores finales antes de editar:
+
+```text
+Tracker: ado | notion
+ID prefix: ...
+(si ado) Project ID / Name / Organization: ...
+(si notion) data source ids + Board URL: ...
+Repos:
+  - <repo>: Hosting ..., Base branch ..., Reglas en .cursor/rules/, Regla rol dev-role-<repo>.mdc
+```
+
+Esperar confirmacion explicita.
+
+### 5. Aplicar y validar
+
+1. Actualizar `dev-project-config.md`.
+2. Generar las reglas de rol por repo.
+3. Validar:
+
+```bash
+node <skills-root>/dev-common/scripts/dev-utils.mjs validate-config --config <skills-root>/dev-common/config/dev-project-config.md
+```
+
+4. Informar que el setup quedo listo.
+
+## Reglas
+
+- No escribir tokens, PATs ni credenciales.
+- Leer el contrato del tracker configurado. En ADO no usar Project Name como parametro `project`.
+- No dejar placeholders `<COMPLETAR_...>` ni `<INSERTE AQUI...>` si el usuario confirmo los datos.

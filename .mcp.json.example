@@ -1,0 +1,28 @@
+{
+  "mcpServers": {
+    "postgresql": {
+      "command": "node",
+      "args": ["mcp-servers/postgresql/src/mcp-postgres-server.js"],
+      "env": {
+        "DB_HOST": "localhost",
+        "DB_PORT": "5432",
+        "DB_USERNAME": "postgres",
+        "DB_PASSWORD": "<COMPLETAR_DB_PASSWORD>",
+        "DB_DATABASE": "mini_trainer_dev"
+      }
+    },
+    "notion": {
+      "command": "node",
+      "args": ["mcp-servers/notion/src/server.js"],
+      "env": {
+        "NOTION_TOKEN": "<COMPLETAR_NOTION_TOKEN>",
+        "NOTION_WORK_ITEMS_DS": "<COMPLETAR_NOTION_WORK_ITEMS_DS>",
+        "NOTION_SPRINTS_DS": "<COMPLETAR_NOTION_SPRINTS_DS>",
+        "NOTION_HISTORY_DS": "<COMPLETAR_NOTION_HISTORY_DS>",
+        "NOTION_BOARD_URL": "<COMPLETAR_NOTION_BOARD_URL>",
+        "NOTION_ME_EMAIL": "<COMPLETAR_NOTION_ME_EMAIL>",
+        "NOTION_ID_PREFIX": "MT"
+      }
+    }
+  }
+}

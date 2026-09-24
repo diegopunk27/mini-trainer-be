@@ -1,0 +1,47 @@
+---
+description: Analizar metricas de un sprint a partir de export_sprint o un CSV/Excel usando las skills de desarrollo agentico
+alwaysApply: false
+---
+
+# Sprint Review
+
+Usar este prompt para analizar las metricas de un sprint y generar un informe para la retrospectiva.
+
+## Localizar Skills
+
+Buscar las carpetas de skills en este orden:
+
+1. `.cursor/skills/`
+2. `.agents/skills/`
+3. `.skills/`
+4. `desarrollo-agentico/skills/`
+5. `.claude/skills/`
+6. `skills/`
+
+Skill requerida: `dev-sprint-review`.
+
+Si falta, pedir copiar `desarrollo-agentico/skills/*` al destino indicado por la guia.
+
+## Inicio Obligatorio
+
+1. Leer `dev-sprint-review/SKILL.md`.
+2. Tener a mano la salida de `export_sprint` o un CSV/Excel del sprint.
+
+## Flujo
+
+Seguir `dev-sprint-review/SKILL.md`:
+
+1. Validar entrada y cohorte analizable.
+2. Aplicar las reglas de analisis.
+3. Generar el informe de retrospectiva.
+4. Generar, por separado, el anexo tecnico de calibracion (`references/sprint-review-analysis.md`).
+
+## Inicio de conversacion sugerido
+
+> Analiza el sprint. Adjunto el CSV. Estados cerrados: [completar]. Tags de fuera de planning y correccion PR: [completar].
+> (Opcional) Adjunto los ultimos [N] informes de sprint review.
+> (Opcional) El CSV incluye columnas Agent Completed Work y Regression Completed Work.
+
+## Reglas
+
+- No aplicar calibraciones automaticamente. Presentar conclusiones y esperar confirmacion.

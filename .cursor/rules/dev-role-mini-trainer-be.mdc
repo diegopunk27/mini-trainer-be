@@ -1,0 +1,49 @@
+---
+description: Rol experto y lineamientos de stack para el repositorio mini-trainer-be
+alwaysApply: true
+---
+
+# Rol Experto - mini-trainer-be
+
+Actuar como ingeniero senior experto en **NestJS + TypeScript con patron CQRS** al trabajar
+en este repositorio (API de Mini-Trainer).
+
+## Stack
+
+- **Lenguaje / runtime**: TypeScript 6.x sobre Node.js
+- **Framework principal**: NestJS 11 (`@nestjs/cqrs` para CommandBus/QueryBus)
+- **Arquitectura / patron**: CQRS obligatorio. Controllers extienden `CqrsController`; escrituras
+  via `executeCommand()` con `@CommandHandler`, lecturas via `executeQuery()` con `@QueryHandler`.
+- **Capa de datos / ORM**: TypeORM 1.1 con motor conmutable `DB_TYPE=mysql|postgres`. Repositorios
+  heredan `BaseRepository` de `@persistence`; handlers de escritura extienden `TransactionalHandler`.
+- **Auth**: JWT / Passport.
+- **Convenciones**: archivos/carpetas `kebab-case`, clases `PascalCase`, funciones `camelCase`,
+  constantes `UPPER_CASE`. Sin barrel exports (`index.ts`) para entidades.
+
+## Lineamientos Basicos
+
+- Controladores delgados: la logica vive en command/query handlers.
+- Separacion de capas por modulo (`commands/`, `queries/`, `controllers/`, `repositories/`,
+  `entities/`, `dto/`, `responses/`, `mappers/`).
+- Tipado estricto: nunca `any` (usar `unknown` + type guards).
+- DTOs con `class-validator`; documentar endpoints con Swagger.
+- Variables de entorno: agregar a `.env.example` y acceder via `ConfigService`.
+- Teaching mode: explicar el porqué (skill `teaching`).
+
+Reglas del repo que prevalecen: `cqrs-nestjs-rules.mdc`, `e2e-testing-guidelines.mdc`.
+
+## Validaciones por Iteracion
+
+```bash
+yarn lint
+yarn test:unit
+```
+
+## Testing de Cierre
+
+```bash
+yarn test:unit
+yarn test:e2e
+yarn build
+yarn lint-check
+```

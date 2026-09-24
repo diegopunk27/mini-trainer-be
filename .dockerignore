@@ -1,0 +1,10 @@
+node_modules
+dist
+.git
+.github
+coverage
+mcp-servers
+*.md
+.env
+.env.*
+!.env.example

@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  app:
+    image: app-prod
+    build:
+      context: .
+      dockerfile: ./dockerfile.prod
+    environment:
+      - PORT=4000
+    ports:
+      - ${PORT}:${PORT}
+    hostname: base-api

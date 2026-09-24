@@ -1,0 +1,48 @@
+---
+description: Ejecutar un code review independiente sobre una Task del tracker o un diff directo, usando las skills de desarrollo agentico
+alwaysApply: false
+---
+
+# Code Review
+
+Usar para revisar codigo generado, independientemente de si se crea un PR.
+
+## Localizar Skills
+
+Buscar las carpetas de skills en este orden:
+
+1. `.cursor/skills/`
+2. `.agents/skills/`
+3. `.skills/`
+4. `desarrollo-agentico/skills/`
+5. `.claude/skills/`
+6. `skills/`
+
+Skills requeridas: `dev-common`, `dev-code-review`, `dev-testing-strategy`.
+
+Si falta una skill requerida, pedir copiar `desarrollo-agentico/skills/*` al destino indicado por la guia.
+
+## Inicio Obligatorio
+
+1. Leer `dev-common/SKILL.md`.
+2. Leer `dev-common/config/dev-project-config.md` y validar que no tenga placeholders.
+3. Leer el contrato del tracker configurado (`dev-common/references/tracker-contracts-ado.md` o `tracker-contracts-notion.md`).
+4. Leer `dev-code-review/SKILL.md`.
+5. Leer la regla de rol/stack del repositorio.
+
+## Input
+
+Uno de los dos:
+
+- **Task ID**: ejecutar en Task mode. Review completo sobre los 6 ejes: cumplimiento de reglas (rol + architecture), huecos en el desarrollo (CA, plan, alcance, casos borde), impacto y riesgos (consumidores/funcionalidad no contemplada, bugs potenciales), optimalidad y simplicidad, decisiones segun el stack, y oportunidades de refactor.
+- **Diff** (pegado directamente o rama): ejecutar en Diff mode. Review acotado: sin verificacion de CA, plan ni alcance.
+
+Si no se provee ninguno: preguntar al usuario cual prefiere.
+
+## Flujo
+
+Seguir `dev-code-review/SKILL.md` segun el modo detectado.
+
+Aplicar siempre el principio rector: revisar como codigo ajeno, descartando todo contexto de implementacion previo (ver SKILL).
+
+Mostrar el informe completo al usuario.

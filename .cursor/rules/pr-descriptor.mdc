@@ -1,0 +1,88 @@
+---
+description: Plantilla y reglas para generar la descripción de Pull Requests (título, motivo, cambios, impacto, archivos clave, tareas relacionadas) usando `git --no-pager diff <rama-destino>`.
+globs:
+alwaysApply: true
+---
+## Generador de Documentación de PR
+
+Vas a recibir una rama con la que te querés mergear (por default tomar `development`). Luego de esto debés hacer por consola un git diff de la rama en la que estás parado con la rama destino.
+
+**INSTRUCCIÓN PREVIA (NO INCLUIR EN EL PR)**:
+Si se proporciona el texto de la historia de usuario, úsalo para:
+
+- Entender mejor el alcance y propósito de los cambios
+- Identificar el impacto real en el usuario final
+- Comprender las necesidades que se están abordando
+
+Una vez que obtenés ese diff debés armar una descripción del PR de la siguiente manera:
+
+1. **Título**:
+
+   - Si la rama tiene un número de tarea, comenzar con #NUMERO
+   - Ser conciso y descriptivo
+   - Máximo 10 palabras
+
+2. **Motivo de cambio**:
+
+   - Explicar brevemente qué se está haciendo y por qué
+   - Enfocarse en el problema o necesidad que se resuelve
+   - Máximo 3 líneas
+
+3. **Cambios realizados**:
+
+   - Listar los cambios principales de forma concisa
+   - Enfocarse en el "qué" y no en el "cómo"
+   - Máximo 5 puntos
+   - Evitar detalles técnicos innecesarios
+
+4. **Impacto**:
+
+   - Describir el impacto en el usuario final
+   - Máximo 2 puntos
+
+5. **Archivos clave**:
+
+   - Listar solo los archivos más relevantes
+   - Máximo 5 archivos
+   - Incluir una breve descripción del cambio en cada uno
+
+6. **Tareas relacionadas**:
+   - Si los commits comienzan con `#PREFIX-123` o `#123`, listarlos aquí
+   - Formato: `#MT-123`, `#456`
+   - Si Tracker = notion, se puede agregar el link de la pagina Notion
+
+IMPORTANTE:
+
+- Usar comando sin paginador: `git --no-pager diff development` (o la rama destino correspondiente)
+- Mantener la descripción concisa y enfocada
+- Evitar redundancias
+- Priorizar la claridad sobre el detalle
+- El output debe ser en formato markdown
+
+EJEMPLO DE OUTPUT:
+
+# #123 Optimización de rendimiento en generación de reportes
+
+## Motivo de cambio
+
+Se identificó la necesidad de optimizar el consumo de recursos durante la generación de reportes, ya que el sistema actual no puede manejar eficientemente múltiples solicitudes simultáneas.
+
+## Cambios realizados
+
+- Implementación de sistema de caché para consultas frecuentes
+- Optimización de queries N+1 en repositorios
+- Actualización de configuración de TypeORM
+
+## Impacto
+
+- Reducción del tiempo de respuesta en endpoints de reportes
+- Mayor estabilidad en entornos con alta concurrencia
+
+## Archivos clave
+
+- `src/modules/reports/repositories/report.repository.ts`: Optimización de queries
+- `src/modules/reports/queries/get-reports.handler.ts`: Implementación de caché
+
+## Tareas relacionadas
+
+#123

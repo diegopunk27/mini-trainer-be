@@ -1,0 +1,50 @@
+---
+description: Convención obligatoria para mensajes de commit (formato `#MT-123 : TÍTULO EN MAYÚSCULAS` + cuerpo en español) extrayendo el ID desde el nombre del branch; usar cuando se solicite crear/draftear commits o mensajes de commit.
+globs:
+alwaysApply: true
+---
+# Reglas para Mensajes de Commit
+
+## Formato Obligatorio
+
+```
+#MT-123 : Título descriptivo de la feature EN MAYUSCULAS
+
+Descripción detallada de los cambios globales realizados.
+```
+
+Tomar el ID de la tarea del nombre de la rama con `^(feature|bugfix)/([A-Z]+-\d+)-`. El prefijo vive en `skills/dev-common/config/dev-project-config.md`. Los ids numericos de ADO siguen validos (`feature/1234-descripcion` → `#1234`).
+
+## Reglas Específicas
+
+1. **ID de Tarea**: El mensaje DEBE comenzar con `#PREFIX-123` (o `#123` si el branch solo trae el id numerico ADO).
+
+2. **Título**: Después del ID, un título descriptivo en MAYÚSCULAS que explique la feature o el fix.
+
+3. **Descripción**: El cuerpo detalla a grandes rasgos los cambios más importantes, el "qué" y el "por qué".
+
+4. **Idioma**: Todos los mensajes de commit DEBEN estar escritos en español.
+
+## Ejemplos
+
+### Ejemplo 1: Nueva Funcionalidad
+
+```
+#MT-123 : IMPLEMENTACIÓN DE MÓDULO DE ÍTEMS
+
+Se agregó el endpoint de creación y listado de ítems del template.
+```
+
+### Ejemplo 2: Corrección de Bug
+
+```
+#WI-5678 : CORRECCIÓN DE ERROR EN VALIDACIÓN DE ARCHIVOS
+
+Se solucionó la validación que permitía cargar archivos con formato incorrecto.
+```
+
+## Extracción del ID
+
+- `feature/MT-123-nueva-funcionalidad` → `#MT-123`
+- `bugfix/WI-5678-correccion-error` → `#WI-5678`
+- `feature/1234-nueva-funcionalidad` → `#1234` (ADO numerico)
