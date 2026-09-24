@@ -6,6 +6,22 @@ import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprot
 import { Client } from 'pg';
 import { config } from 'dotenv';
 
+const WRITE_KEYWORDS = /\b(insert|update|delete|drop|alter|truncate|grant|revoke|copy|create|comment|vacuum|call|do)\b/i;
+
+function assertReadOnly(sql) {
+  const stripped = String(sql || '')
+    .replace(/\/\*[\s\S]*?\*\//g, ' ')
+    .replace(/--.*$/gm, ' ')
+    .trim();
+  const withoutTrailing = stripped.replace(/;\s*$/, '');
+  if (!withoutTrailing || withoutTrailing.includes(';')) {
+    throw new Error('Solo se permite una sentencia de lectura');
+  }
+  if (!/^(select|with|explain)\b/i.test(withoutTrailing) || WRITE_KEYWORDS.test(withoutTrailing)) {
+    throw new Error('El MCP de Postgres es de solo lectura (SELECT, WITH o EXPLAIN)');
+  }
+}
+
 // Cargar variables de entorno si existe el archivo .env
 try {
   config();
@@ -160,6 +176,7 @@ class PostgresMCPServer {
 
   async handleQueryDatabase(args) {
     const { query, params = [] } = args;
+    assertReadOnly(query);
 
     const result = await this.client.query(query, params);
 

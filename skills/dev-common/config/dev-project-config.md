@@ -1,57 +1,61 @@
-# Configuracion del proyecto - Desarrollo Agentico (nestjs_cqrs_base)
+# Configuracion del proyecto - Mini-Trainer
 
-Este archivo es la configuracion central del desarrollo agentico para el proyecto actual. Lo leen las
+Este archivo es la configuracion central del desarrollo agentico para Mini-Trainer. Lo leen las
 skills `dev-*`. No incluir tokens, PATs ni credenciales (viven en la config del MCP).
 
-> **Topologia de este proyecto**: el tracker se usa **solo para work items / boards** (US, Tasks,
-> estimacion, sprint). El **codigo y los Pull Requests viven en GitHub** (`<COMPLETAR_GITHUB_ORG>/nestjs_cqrs_base`),
-> gestionados con la skill `pr` (`gh`). Las skills `dev-*` operan sobre work items; no hay
-> Repository ID de ADO.
+> **Topologia de este proyecto**: el tracker es **Notion** (work items y board). El codigo y los
+> Pull Requests viven en GitHub (`diegoyanacon/mini-trainer-be`, `mini-trainer-fe`, `mini-trainer-app`),
+> gestionados con la skill `pr` (`gh`).
 
 ## Tracker
 
-- **Tracker**: `ado`
-  Valores: `ado` | `notion`. Default del template: `ado` (checkouts estilo empresa siguen funcionando).
-- **ID prefix**: `WI`
-  Prefijo de IDs publicos (`WI-123`, `MT-123`). En ADO los ids numericos (`1234`) siguen validos.
+- **Tracker**: `notion`
+- **ID prefix**: `MT`
   El commit toma el ID del branch con `^(feature|bugfix)/([A-Z]+-\d+)-` usando este prefijo.
 
 Leer **el contrato del tracker configurado**:
 
-- `ado` → `../references/tracker-contracts-ado.md`
 - `notion` → `../references/tracker-contracts-notion.md`
 
-Los nombres de tools coinciden; los procedimientos de las skills no cambian.
+## Notion
 
-## Azure DevOps (cuando Tracker = ado)
+Una sola base de work items (Epic, User Story, Task y Bug). El token vive solo en `.cursor/mcp.json`.
 
-- **Azure DevOps Project ID**: `<COMPLETAR_ADO_PROJECT_ID>`
-- **Azure DevOps Project Name**: `<COMPLETAR_ADO_PROJECT_NAME>`
-- **Azure DevOps Organization**: `<COMPLETAR_ORGANIZATION>`
-
-## Notion (cuando Tracker = notion)
-
-- **Notion US data source id**: `<COMPLETAR_NOTION_US_DATA_SOURCE_ID>`
-- **Notion Task data source id**: `<COMPLETAR_NOTION_TASK_DATA_SOURCE_ID>`
-- **Notion Bug data source id**: `<COMPLETAR_NOTION_BUG_DATA_SOURCE_ID>`
-- **Notion Board URL**: `<COMPLETAR_NOTION_BOARD_URL>`
+- **Notion US data source id**: `4064495b03634db18c5e04e2f070f6be`
+- **Notion Task data source id**: `4064495b03634db18c5e04e2f070f6be`
+- **Notion Bug data source id**: `4064495b03634db18c5e04e2f070f6be`
+- **Notion work items data source id**: `4064495b03634db18c5e04e2f070f6be`
+- **Notion sprints data source id**: `1aec9723becd43eeb0c5cb5576f002dc`
+- **Notion history data source id**: `5b52bc6ddf5e46b6af78fe8123506acb`
+- **Notion Board URL**: `https://app.notion.com/p/Mini-Trainer-288d3cd0d4464b749e5f6204ed157e29?t=3e53593e416480cb828a00a976701ca9`
+- **Notion me email**: `diegopunk27@gmail.com`
 
 ## Repositorios
 
-El codigo de este proyecto vive en **GitHub**, no en Azure DevOps Repos.
+### Repo: `mini-trainer-be`
 
-### Repo: `nestjs_cqrs_base`
-
-- **Hosting**: GitHub (`git@github.com:<COMPLETAR_GITHUB_ORG>/nestjs_cqrs_base.git`)
-- **Azure DevOps Repository ID**: `N/A` (no aplica; el repo no esta en ADO Repos)
+- **Hosting**: GitHub (`git@github.com:diegoyanacon/mini-trainer-be.git`)
 - **Base branch**: `development`
-- **Regla de rol/stack**: `dev-role-nestjs_cqrs_base.mdc`
-  Generar a partir de `stack-role.template.md` (stack NestJS + CQRS + TypeORM). La usa
-  `dev-plan-execution` para las validaciones por iteracion y el testing de cierre.
+- **Regla de rol/stack**: `.cursor/rules/dev-role-mini-trainer-be.mdc`
 - **Ubicacion de reglas del proyecto**: `.cursor/rules/`
-  Carpeta donde viven las reglas de arquitectura y convenciones del repo. Los flujos leen de aqui las
-  reglas necesarias.
-- **Pull Requests**: se crean en GitHub con la skill `pr` (no con flujos de PR del tracker).
+- **Pull Requests**: GitHub, skill `pr`.
+
+### Repo: `mini-trainer-fe`
+
+- **Hosting**: GitHub (`git@github.com:diegoyanacon/mini-trainer-fe.git`)
+- **Base branch**: `development`
+- **Regla de rol/stack**: `.cursor/rules/dev-role-mini-trainer-fe.mdc`
+- **Ubicacion de reglas del proyecto**: `.cursor/rules/`
+- **Pull Requests**: GitHub, skill `pr`.
+
+### Repo: `mini-trainer-app`
+
+- **Hosting**: GitHub (`git@github.com:diegoyanacon/mini-trainer-app.git`)
+- **Base branch**: `development`
+- **Regla de rol/stack**: `.cursor/rules/dev-role-mini-trainer-app.mdc`
+- **Ubicacion de reglas del proyecto**: `.cursor/rules/`
+- **Pull Requests**: GitHub, skill `pr`.
+
 
 ## Reglas de uso en MCP
 

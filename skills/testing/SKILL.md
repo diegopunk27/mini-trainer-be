@@ -37,6 +37,12 @@ metadata:
 5. **AAA Pattern**: Arrange, Act, Assert in every test
 6. **One File Per Endpoint**: Don't mix tests from different endpoints
 
+## Mini-Trainer
+
+- Dos organizaciones en el e2e de aislamiento: el token de A con ids de B responde 404.
+- Las reservas concurrentes se prueban con `Promise.all` sobre la base real. Despues, el ledger cuadra: saldo = suma de deltas = ultimo `balance_after`.
+- El reloj de los jobs es `ClockPort`.
+
 ---
 
 ## Critical Patterns

@@ -40,6 +40,13 @@ Use these skills for detailed patterns on-demand:
 | `dev-testing-strategy` | Diseno de tests | [SKILL.md](skills/dev-testing-strategy/SKILL.md) |
 | `dev-sprint-review` | Metricas de sprint | [SKILL.md](skills/dev-sprint-review/SKILL.md) |
 
+### Product skills
+| Skill | Description | URL |
+|-------|-------------|-----|
+| `multi-tenancy` | Aislamiento por organizacion | [SKILL.md](skills/multi-tenancy/SKILL.md) |
+| `jobs-notifications` | Jobs en la misma transaccion y avisos | [SKILL.md](skills/jobs-notifications/SKILL.md) |
+| `storage` | Archivos privados y EXIF | [SKILL.md](skills/storage/SKILL.md) |
+
 ### Documentation & Meta Skills
 | Skill | Description | URL |
 |-------|-------------|-----|
@@ -53,6 +60,7 @@ When performing these actions, ALWAYS invoke the corresponding skill FIRST:
 
 | Action | Skill |
 |--------|-------|
+| Adding a tenant table or repository | `multi-tenancy` |
 | Adding environment variables | `code-review` |
 | After creating/modifying a skill | `skill-sync` |
 | Aligning test coverage with a Task development plan | `dev-testing-strategy` |
@@ -86,6 +94,7 @@ When performing these actions, ALWAYS invoke the corresponding skill FIRST:
 | Designing a test strategy from acceptance criteria | `dev-testing-strategy` |
 | Diagnosing the root cause of a Bug before fixing it | `dev-bug-fix-tasks` |
 | Documenting API endpoints | `controllers` |
+| Enqueueing a background job | `jobs-notifications` |
 | Estimating a tracker task | `dev-estimation` |
 | Estimating agentic development work in hours | `dev-estimation` |
 | Evaluating a diff against architecture rules and stack decisions | `dev-code-review` |
@@ -93,6 +102,7 @@ When performing these actions, ALWAYS invoke the corresponding skill FIRST:
 | Explaining code patterns | `teaching` |
 | Filling pull request template | `pr` |
 | Generating PR description | `pr` |
+| Generating a signed file URL | `storage` |
 | Generating tasks with development plans from a US | `dev-tasks` |
 | Implementing CQRS handlers | `nestjs-cqrs` |
 | Implementing HTTP routes | `controllers` |
@@ -116,18 +126,22 @@ When performing these actions, ALWAYS invoke the corresponding skill FIRST:
 | Reviewing code | `teaching` |
 | Reviewing estimation accuracy at sprint close | `dev-sprint-review` |
 | Reviewing pull requests | `code-review` |
+| Reviewing tenant isolation | `multi-tenancy` |
 | Running a Task mode or Diff mode code review | `dev-code-review` |
 | Running a sprint retrospective report | `dev-sprint-review` |
 | Running step-by-step development of a planned task | `dev-plan-execution` |
+| Sending an email or in-app notification | `jobs-notifications` |
 | Setting up transactional operations | `nestjs-cqrs` |
 | Suggesting architectural changes | `teaching` |
 | Testing CQRS handlers | `testing` |
 | Testing controllers | `testing` |
 | Troubleshoot why a skill is missing from AGENTS.md | `skill-sync` |
 | Updating README files | `docs` |
+| Uploading a file or progress photo | `storage` |
 | Working with CommandBus or QueryBus | `nestjs-cqrs` |
 | Writing E2E tests | `testing` |
 | Writing TypeScript types/interfaces | `typescript` |
+| Writing a query that reads tenant data | `multi-tenancy` |
 | Writing documentation | `docs` |
 | Writing integration tests | `testing` |
 | Writing technical guides | `docs` |

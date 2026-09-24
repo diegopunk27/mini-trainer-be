@@ -43,6 +43,7 @@ metadata:
 10. **Handlers MUST NOT depend on orchestration services**: Command/Query handlers MUST NOT inject application `*Service` classes that themselves use `CommandBus` or `QueryBus` to dispatch other commands/queries. Use `QueryBus`/`CommandBus` in the handler for the specific read/write you need (or repositories/mappers only). Rationale: avoids handler → service → bus → handler cycles, simplifies unit tests, and keeps CQRS boundaries clear.
 11. **Cross-module reads**: go through the QueryBus. Do not inject another module's repository just to read.
 12. **Atomic cross-module writes (confirm-sale pattern)**: a command handler MAY inject another module's **exported** repository when both writes must share the same unit of work. This is not always forbidden. Regular (non-atomic) writes still go through CommandBus.
+13. **Tenant**: las tablas del tenant no usan un subscriber. El repositorio fuerza `organization_id` desde el contexto. Ver la skill `multi-tenancy`.
 
 ---
 

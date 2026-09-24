@@ -31,10 +31,19 @@ tramites-be/
         └── scripts/{setup.cjs,test.cjs}
 ```
 
-## 🔒 Seguridad
+## Seguridad
 
-- No subas `.cursor/mcp.json` al repo
-- Usa un usuario de DB con permisos mínimos
+- No subas `.cursor/mcp.json` al repo.
+- El server rechaza cualquier sentencia que no sea `SELECT`, `WITH` o `EXPLAIN`.
+- Conectalo con un rol de solo lectura:
+
+```sql
+CREATE ROLE mini_trainer_readonly LOGIN PASSWORD '<password>';
+GRANT CONNECT ON DATABASE mini_trainer_dev TO mini_trainer_readonly;
+GRANT USAGE ON SCHEMA public TO mini_trainer_readonly;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO mini_trainer_readonly;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO mini_trainer_readonly;
+```
 
 ## 🐛 Troubleshooting
 
